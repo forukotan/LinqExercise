@@ -68,18 +68,45 @@ namespace LinqExercise
             var employees = CreateEmployees();
 
             //TODO: Print all the employees' FullName properties to the console only if their FirstName starts with a C OR an S and order this in ascending order by FirstName.
+            Console.WriteLine("-------------------------");
+            Console.WriteLine("Keep only the C and the S");
+            Console.WriteLine("-------------------------");
+            var firstLetter = employees.Where(x => x.FirstName[0] == 'C' || x.FirstName[0] == 'S');
+            var alphaOrder = firstLetter.OrderBy(x => x.FirstName);
+            foreach(var x in alphaOrder)
+            {
+                Console.WriteLine(x.FullName);
+            }
 
             //TODO: Print all the employees' FullName and Age who are over the age 26 to the console and order this by Age first and then by FirstName in the same result.
+            Console.WriteLine("-------------------------");
+            Console.WriteLine("no one younger than 26");
+            Console.WriteLine("-------------------------");
+            var ages = employees.Where(x => x.Age > 26);
+            var ageList = ages.OrderBy(x => x.Age).ThenBy(y=> y.FirstName);
+            foreach (var x in ageList)
+            {
+                Console.WriteLine(x.FullName);
+            }
 
             //TODO: Print the Sum and then the Average of the employees' YearsOfExperience if their YOE is less than or equal to 10 AND Age is greater than 35.
+            var years = employees.Where(x => x.YearsOfExperience <= 10 && x.Age > 35);
+            var yearSum = years.Sum(x => x.YearsOfExperience);
+            var yearavg = years.Average(x => x.YearsOfExperience);
 
+            Console.WriteLine($"SUM: {yearSum} AVG:{yearavg}");
             //TODO: Add an employee to the end of the list without using employees.Add()
+            employees = employees.Append(new Employee { FirstName = "Femi", LastName = "Orukotan", Age = 27, YearsOfExperience = 1 }).ToList();
 
+            foreach (var x in employees)
+            {
+                Console.WriteLine(x.FullName, x.Age);
+            }
 
             Console.WriteLine();
 
             Console.ReadLine();
-        }
+        } 
 
         #region CreateEmployeesMethod
         private static List<Employee> CreateEmployees()
@@ -98,6 +125,7 @@ namespace LinqExercise
 
             return employees;
         }
+
         #endregion
     }
 }
